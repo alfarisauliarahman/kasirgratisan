@@ -95,8 +95,7 @@ describe('fromWireData', () => {
       uidToId,
     );
 
-    expect(res.ok).toBe(true);
-    if (!res.ok) return;
+    if (res.status !== 'ok') throw new Error('seharusnya berhasil, malah kurang relasi');
     expect(res.value.transactionId).toBe(88);
     expect(res.value.productId).toBe(12);
   });
@@ -108,8 +107,7 @@ describe('fromWireData', () => {
       uidToId,
     );
 
-    expect(res.ok).toBe(true);
-    if (!res.ok) return;
+    if (res.status !== 'ok') throw new Error('seharusnya berhasil, malah kurang relasi');
     expect(res.value.createdAt).toBeInstanceOf(Date);
     expect((res.value.createdAt as Date).toISOString()).toBe('2026-07-01T00:00:00.000Z');
   });
@@ -121,8 +119,7 @@ describe('fromWireData', () => {
       uidToId,
     );
 
-    expect(res.ok).toBe(false);
-    if (res.ok) return;
+    if (res.status !== 'missing') throw new Error('seharusnya gagal karena induknya belum ada');
     expect(res.missing).toEqual([{ table: 'transactions', uid: 'uid-belum-ada' }]);
   });
 
@@ -133,15 +130,13 @@ describe('fromWireData', () => {
       uidToId,
     );
 
-    expect(res.ok).toBe(false);
-    if (res.ok) return;
+    if (res.status !== 'missing') throw new Error('seharusnya gagal karena kedua induknya belum ada');
     expect(res.missing).toHaveLength(2);
   });
 
   it('tidak membuang field yang tidak dikenal, supaya kolom baru tetap lewat', () => {
     const res = fromWireData('products', { name: 'X', kolomBaru: 'nilai' }, uidToId);
-    expect(res.ok).toBe(true);
-    if (!res.ok) return;
+    if (res.status !== 'ok') throw new Error('seharusnya berhasil, malah kurang relasi');
     expect(res.value.kolomBaru).toBe('nilai');
   });
 });
@@ -164,8 +159,7 @@ describe('bolak-balik', () => {
     const wire = toWireData('products', asli, idToUid);
     const res = fromWireData('products', wire, uidToId);
 
-    expect(res.ok).toBe(true);
-    if (!res.ok) return;
+    if (res.status !== 'ok') throw new Error('seharusnya berhasil, malah kurang relasi');
     expect(res.value.name).toBe('Kopi');
     expect(res.value.price).toBe(5000);
     // id lokal berbeda di perangkat penerima — itu memang yang diharapkan.
