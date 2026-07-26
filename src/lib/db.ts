@@ -1,5 +1,6 @@
 import Dexie, { type Table } from 'dexie';
 import { setupUidHooks, backfillUids } from './selfsync/uid';
+import { setupSyncTriggers } from './selfsync/triggers';
 
 // === Permission keys (CR-multiuser) ===
 export type PermissionKey =
@@ -833,6 +834,7 @@ class PosDatabase extends Dexie {
 export const db = new PosDatabase();
 setupSyncHooks(db);
 setupUidHooks(db);
+setupSyncTriggers(db);
 
 // Apakah stok produk dikelola? `undefined`/`true` = dikelola (perilaku lama),
 // `false` = tidak dikelola (produk selalu tersedia, stok diabaikan).
