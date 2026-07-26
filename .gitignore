@@ -50,3 +50,6 @@ keystore.properties
 # Knowledge base files (do not commit)
 Knowledge/
 knowledge/
+
+# Wrangler build/state cache (regenerates on next dev/deploy)
+.wrangler/
