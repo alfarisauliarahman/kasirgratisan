@@ -1,20 +1,23 @@
 {
-  // Worker sync untuk FreeKasir. Terpisah total dari worker frontend di root repo.
-  "$schema": "https://json.schemastore.org/wrangler.json",
-  "name": "kasirgratisan-sync",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-07-01",
-  "observability": {
-    "enabled": true
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "freekasir-sync",
-      // Ganti dengan database_id asli dari output `wrangler d1 create freekasir-sync`.
-      "database_id": "<PASTE_DATABASE_ID>"
-    }
-  ]
-  // SYNC_SECRET TIDAK ditulis di sini. Set lewat:
-  //   npx wrangler secret put SYNC_SECRET
+	// Worker sync untuk FreeKasir. Terpisah total dari worker frontend di root repo.
+	"$schema": "https://json.schemastore.org/wrangler.json",
+	"name": "kasirgratisan-sync",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-07-01",
+	"observability": {
+		"enabled": true
+	},
+	// Kode Worker membaca binding bernama `DB` (lihat `Env` di src/index.ts),
+	// jadi namanya harus persis itu. `wrangler d1 create` sempat menambahkan
+	// binding kedua bernama `freekasir_sync` ke database yang sama — sudah
+	// dihapus supaya tidak ada dua binding untuk satu database.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "freekasir-sync",
+			"database_id": "36be8cc3-04b8-41d0-99c6-87d95aa4d8f3"
+		}
+	]
+	// SYNC_SECRET TIDAK ditulis di sini. Set lewat:
+	//   npx wrangler secret put SYNC_SECRET
 }
