@@ -47,6 +47,7 @@ const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: '
 const TEST_TIMEOUT_MS = 12000;
 
 type TestResult = { ok: boolean; message: string } | null;
+type SyncResult = { ok: boolean; message: string } | null;
 
 export default function SelfSyncSettings() {
   const { can } = useAuth();
@@ -63,8 +64,47 @@ export default function SelfSyncSettings() {
   const [testResult, setTestResult] = useState<TestResult>(null);
   const [resetOpen, setResetOpen] = useState(false);
 
-  const lastSyncAt = getLastSyncAt();
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<SyncResult>(null);
+  // Dibaca dari state supaya waktunya ikut menyegar setelah sync manual,
+  // bukan hanya saat halaman dibuka ulang.
+  const [lastSyncAt, setLastSyncAt] = useState(() => getLastSyncAt());
+
   const deviceId = getDeviceId();
+
+  /**
+   * Jalankan sync sekarang dan tunjukkan hasilnya apa adanya.
+   *
+   * Ini juga alat diagnosa: tanpa ini, "belum muncul di HP lain" tidak bisa
+   * dibedakan dari "sync-nya memang tidak jalan".
+   */
+  const handleSyncNow = async () => {
+    setSyncing(true);
+    setSyncResult(null);
+    try {
+      const { syncNow } = await import('@/lib/selfsync/scheduler');
+      const r = await syncNow();
+
+      if (r.skipped === 'not-configured') {
+        setSyncResult({ ok: false, message: t('selfSync.sync.notConfigured') });
+      } else if (!r.ok) {
+        setSyncResult({ ok: false, message: r.error ?? t('selfSync.sync.failed') });
+      } else {
+        setSyncResult({
+          ok: true,
+          message: t('selfSync.sync.done', { sent: r.pushed, received: r.applied }),
+        });
+        setLastSyncAt(getLastSyncAt());
+      }
+    } catch (err) {
+      setSyncResult({
+        ok: false,
+        message: err instanceof Error ? err.message : t('selfSync.sync.failed'),
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   if (!can('manage_backup')) {
     return (
@@ -221,6 +261,28 @@ export default function SelfSyncSettings() {
               aria-label={t('selfSync.toggle.label')}
             />
           </div>
+
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleSyncNow}
+            disabled={syncing || !hasSavedConfig}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
+            {syncing ? t('selfSync.sync.running') : t('selfSync.sync.button')}
+          </Button>
+
+          {syncResult && (
+            <div
+              className={`rounded-xl p-3 text-[11px] leading-snug ${
+                syncResult.ok
+                  ? 'bg-success/10 text-success'
+                  : 'bg-destructive/10 text-destructive'
+              }`}
+            >
+              {syncResult.message}
+            </div>
+          )}
 
           <div className="flex items-start gap-2 text-[10px] text-muted-foreground">
             <Smartphone className="w-3.5 h-3.5 shrink-0 mt-0.5" />

@@ -435,6 +435,13 @@
       "urlRequired": "The server address is still empty",
       "secretRequired": "The secret key is still empty",
       "cursorReset": "Done. All data will be pulled again from the beginning on the next sync."
+    },
+    "sync": {
+      "button": "Sync now",
+      "running": "Syncing...",
+      "done": "Sync successful. Sent {{sent}} changes, received {{received}}.",
+      "failed": "Sync failed due to an unexpected error.",
+      "notConfigured": "Sync is not active yet. Fill in the server address and key, then turn the switch on."
     }
   },
   "cloudAutoBackup": {

@@ -435,6 +435,13 @@
       "urlRequired": "Alamat server masih kosong",
       "secretRequired": "Kunci rahasia masih kosong",
       "cursorReset": "Siap. Data akan diambil ulang dari awal saat sinkronisasi berikutnya."
+    },
+    "sync": {
+      "button": "Sync sekarang",
+      "running": "Menyinkronkan...",
+      "done": "Sync berhasil. Terkirim {{sent}} perubahan, diterima {{received}}.",
+      "failed": "Sync gagal karena kesalahan tak terduga.",
+      "notConfigured": "Sync belum aktif. Isi alamat server dan kunci, lalu nyalakan sakelarnya."
     }
   },
   "cloudAutoBackup": {

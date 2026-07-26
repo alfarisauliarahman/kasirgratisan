@@ -406,6 +406,13 @@
       "urlRequired": "Alamat pelayan masih kosong",
       "secretRequired": "Kunci rahsia masih kosong",
       "cursorReset": "Selesai. Semua data akan diambil semula dari awal pada penyelarasan seterusnya."
+    },
+    "sync": {
+      "button": "Selaras sekarang",
+      "running": "Menyelaraskan...",
+      "done": "Penyelarasan berjaya. Dihantar {{sent}} perubahan, diterima {{received}}.",
+      "failed": "Penyelarasan gagal kerana ralat tidak dijangka.",
+      "notConfigured": "Penyelarasan belum aktif. Isi alamat pelayan dan kunci rahsia, kemudian hidupkan suisnya."
     }
   },
   "cloudAutoBackup": {
