@@ -1,4 +1,5 @@
 import Dexie, { type Table } from 'dexie';
+import { setupUidHooks, backfillUids } from './selfsync/uid';
 
 // === Permission keys (CR-multiuser) ===
 export type PermissionKey =
@@ -285,6 +286,8 @@ export interface DeletedRecord {
   id?: number;
   tableName: string;
   recordId: number | string;
+  /** uid record yang dihapus, supaya tombstone bisa dikenali perangkat lain. */
+  recordUid?: string | null;
   deletedAt: Date;
   syncedAt: Date | null;
 }
@@ -797,11 +800,39 @@ class PosDatabase extends Dexie {
       await backfillTable('debtPayments', ['date']);
       await backfillTable('stockOpnames', ['date']);
     });
+
+    // Version 15 — identitas record lintas perangkat untuk sync mandiri.
+    // `uid` ditambahkan berdampingan dengan `++id`; id lokal tetap dipakai
+    // seluruh relasi antar tabel, jadi tidak ada kode UI yang berubah.
+    this.version(15).stores({
+      categories:        '++id, name, isDeleted, updatedAt, syncedAt, &uid',
+      products:          '++id, name, &sku, categoryId, barcode, isDeleted, createdBy, updatedBy, unit, updatedAt, syncedAt, &uid',
+      suppliers:         '++id, name, isDeleted, updatedAt, syncedAt, &uid',
+      customers:         '++id, name, isDeleted, updatedAt, syncedAt, &uid',
+      stockIns:          '++id, productId, supplierId, date, createdBy, updatedAt, syncedAt, &uid',
+      stockOuts:         '++id, productId, date, createdBy, updatedAt, syncedAt, &uid',
+      hppHistory:        '++id, productId, date, syncedAt, &uid',
+      paymentMethods:    '++id, name, category, updatedAt, syncedAt, &uid',
+      transactions:      '++id, date, &receiptNumber, paymentMethodId, status, orderNumber, createdBy, updatedAt, syncedAt, &uid',
+      transactionItems:  '++id, transactionId, productId, &uid',
+      units:             '++id, &name, isDeleted, updatedAt, syncedAt, &uid',
+      users:             '++id, &username, role, isActive, updatedAt, syncedAt, &uid',
+      expenseCategories: '++id, name, isDeleted, updatedAt, syncedAt, &uid',
+      expenses:          '++id, date, categoryId, paymentMethodId, createdBy, isDeleted, updatedAt, syncedAt, &uid',
+      debts:             '++id, &transactionId, customerId, status, createdAt, updatedAt, syncedAt, &uid',
+      debtPayments:      '++id, debtId, date, paymentMethodId, createdBy, updatedAt, syncedAt, &uid',
+      stockOpnames:      '++id, date, status, createdBy, updatedAt, syncedAt, &uid',
+      stockOpnameItems:  '++id, opnameId, productId, [opnameId+productId], &uid',
+      deletedRecords:    '++id, tableName, recordId, recordUid, deletedAt, syncedAt',
+    }).upgrade(async (tx) => {
+      await backfillUids(tx as any);
+    });
   }
 }
 
 export const db = new PosDatabase();
 setupSyncHooks(db);
+setupUidHooks(db);
 
 // Apakah stok produk dikelola? `undefined`/`true` = dikelola (perilaku lama),
 // `false` = tidak dikelola (produk selalu tersedia, stok diabaikan).
@@ -911,10 +942,13 @@ export function setupSyncHooks(db: PosDatabase) {
   hardDeleteTables.forEach((tableName) => {
     const table = db.table(tableName);
     table.hook('deleting', (primKey, obj) => {
+      // Dibaca sekarang selagi record masih ada; di dalam setTimeout sudah hilang.
+      const recordUid = (obj as any)?.uid ?? null;
       setTimeout(() => {
         db.deletedRecords.add({
           tableName,
           recordId: primKey,
+          recordUid,
           deletedAt: new Date(),
           syncedAt: null
         }).catch((err) => {
