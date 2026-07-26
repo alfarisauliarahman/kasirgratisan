@@ -21,7 +21,10 @@ android {
     namespace = "com.freekasir.app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.freekasir.app"
+        // Sengaja berbeda dari aplikasi FreeKasir resmi di Play Store
+        // (com.freekasir.app). Identitas yang sama membuat Android menolak
+        // memasang keduanya, karena tanda tangannya berbeda.
+        applicationId "com.alfaris.freekasir"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode webVersionCode

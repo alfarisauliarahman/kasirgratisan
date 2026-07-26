@@ -1,7 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.freekasir.app',
+  // Berbeda dari aplikasi resmi di Play Store supaya keduanya bisa terpasang
+  // berdampingan di satu HP; lihat catatan di android/app/build.gradle.
+  appId: 'com.alfaris.freekasir',
   appName: 'FreeKasir',
   webDir: 'dist',
   android: {

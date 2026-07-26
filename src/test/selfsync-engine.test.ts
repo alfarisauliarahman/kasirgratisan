@@ -329,6 +329,31 @@ describe('saat gagal', () => {
   });
 });
 
+describe('merapikan alamat server', () => {
+  const BASE = 'https://sync.example.com';
+
+  it('menerima alamat yang ditempel lengkap dengan /api/health', async () => {
+    const { normalizeUrl } = await import('@/lib/selfsync/config');
+    expect(normalizeUrl(BASE + '/api/health')).toBe(BASE);
+    expect(normalizeUrl(BASE + '/api/sync')).toBe(BASE);
+  });
+
+  it('membuang garis miring dan spasi berlebih', async () => {
+    const { normalizeUrl } = await import('@/lib/selfsync/config');
+    expect(normalizeUrl('  ' + BASE + '/  ')).toBe(BASE);
+    expect(normalizeUrl(BASE + '/api/health/')).toBe(BASE);
+  });
+
+  it('tetap mengirim ke alamat yang benar walau ditempel salah', async () => {
+    setConfig({ url: BASE + '/api/health', secret: 'rahasia', enabled: true });
+    const { fetchMock } = fakeServer([{ cursor: 0, changes: [] }]);
+
+    await runSync();
+
+    expect(String(fetchMock.mock.calls[0][0])).toBe(BASE + '/api/sync');
+  });
+});
+
 describe('memutus perangkat', () => {
   it('menghapus kunci, bukan sekadar mematikan sync', async () => {
     const { disconnectDevice, getConfig } = await import('@/lib/selfsync/config');

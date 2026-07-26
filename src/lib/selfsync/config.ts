@@ -41,9 +41,21 @@ function write(key: string, value: string): void {
   }
 }
 
-/** Buang garis miring di akhir supaya `url + '/api/sync'` tidak jadi `//`. */
+/**
+ * Rapikan alamat server yang diketik pemakai.
+ *
+ * Yang dibutuhkan cuma alamat pangkalnya. Tapi orang wajar saja menempel
+ * alamat yang tadi dibuka di browser untuk mengecek server — biasanya yang
+ * berakhiran `/api/health` — dan kalau dibiarkan, permintaan sync akan
+ * dikirim ke `.../api/health/api/sync` lalu gagal tanpa petunjuk apa pun.
+ * Lebih baik dimaafkan di sini daripada jadi teka-teki nanti.
+ */
 export function normalizeUrl(raw: string): string {
-  return raw.trim().replace(/\/+$/, '');
+  return raw
+    .trim()
+    .replace(/\/+$/, '')
+    .replace(/\/api\/(health|sync)$/i, '')
+    .replace(/\/+$/, '');
 }
 
 export function getConfig(): SyncConfig {
