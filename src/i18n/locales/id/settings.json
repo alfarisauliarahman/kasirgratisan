@@ -364,6 +364,79 @@
       "close": "Tutup"
     }
   },
+  "selfSync": {
+    "nav": {
+      "title": "Sinkron Antar HP",
+      "description": "Samakan data toko di beberapa HP lewat server sendiri"
+    },
+    "locked": {
+      "title": "Sinkron Antar HP",
+      "permissionLabel": "Kelola Backup"
+    },
+    "title": "Sinkron Antar HP",
+    "intro": "Samakan data toko di beberapa HP atau tablet lewat server sinkron milik sendiri. Isi alamat server dan kunci rahasia yang sama persis di setiap perangkat.",
+    "status": {
+      "title": "Status",
+      "on": "Aktif",
+      "off": "Nonaktif",
+      "lastSync": "Terakhir berhasil: {{time}}",
+      "neverSynced": "Belum pernah berhasil sinkron",
+      "deviceId": "Kode perangkat ini:",
+      "deviceIdHint": "sebutkan kode ini kalau minta bantuan"
+    },
+    "toggle": {
+      "label": "Nyalakan sinkronisasi",
+      "description": "Kalau aktif, data toko dikirim dan diambil dari server ini.",
+      "needsConfig": "Isi alamat server dan kunci rahasia, lalu simpan dulu."
+    },
+    "form": {
+      "title": "Alamat server & kunci",
+      "urlLabel": "Alamat server",
+      "urlPlaceholder": "https://sinkron.tokosaya.com",
+      "urlHint": "Salin persis seperti yang diberikan, lengkap dengan https://",
+      "secretLabel": "Kunci rahasia",
+      "secretPlaceholder": "Tempel kunci rahasia di sini",
+      "secretHint": "Kunci disimpan di HP ini saja dan tidak ikut terkirim ke perangkat lain.",
+      "showSecret": "Tampilkan kunci",
+      "hideSecret": "Sembunyikan kunci",
+      "save": "Simpan",
+      "savedAlready": "Sudah tersimpan"
+    },
+    "warning": {
+      "title": "Jaga kunci rahasia ini",
+      "sameSecret": "Kunci yang sama harus diisi di semua HP yang mau disinkronkan. Kalau berbeda sedikit saja, datanya tidak akan nyambung.",
+      "keepPrivate": "Siapa pun yang punya kunci ini bisa membaca data tokomu. Jangan dikirim ke grup chat dan jangan diberikan ke orang luar."
+    },
+    "test": {
+      "button": "Tes koneksi",
+      "testing": "Menghubungi server…",
+      "ok": "Server terhubung. Alamatnya sudah benar.",
+      "emptyUrl": "Alamat server masih kosong. Isi dulu alamatnya.",
+      "invalidUrl": "Alamat server tidak sesuai. Contoh yang benar: https://sinkron.tokosaya.com",
+      "unreachable": "Server tidak bisa dihubungi. Cek koneksi internet HP ini, lalu pastikan alamatnya diketik dengan benar.",
+      "badStatus": "Server menjawab, tapi bukan jawaban yang diharapkan (kode {{status}}). Tanyakan alamat yang benar ke orang yang memasang server.",
+      "note": "Tes ini hanya memeriksa alamat server. Kunci rahasia tidak ikut dikirim."
+    },
+    "advanced": {
+      "title": "Lanjutan",
+      "resetTitle": "Ambil ulang semua data",
+      "resetDescription": "Aman: aplikasi hanya membaca ulang seluruh data dari server dari awal, tidak ada data yang dihapus. Berguna kalau ada data yang terasa belum muncul di HP ini.",
+      "resetButton": "Ambil ulang dari awal",
+      "dialog": {
+        "title": "Ambil ulang semua data?",
+        "description": "Sinkronisasi berikutnya akan membaca seluruh data dari server dari awal. Tidak ada data yang dihapus, tapi prosesnya bisa lebih lama dan memakai kuota internet lebih banyak dari biasanya.",
+        "confirm": "Ya, ambil ulang"
+      }
+    },
+    "toast": {
+      "saved": "Alamat server dan kunci disimpan",
+      "enabled": "Sinkronisasi dinyalakan",
+      "disabled": "Sinkronisasi dimatikan",
+      "urlRequired": "Alamat server masih kosong",
+      "secretRequired": "Kunci rahasia masih kosong",
+      "cursorReset": "Siap. Data akan diambil ulang dari awal saat sinkronisasi berikutnya."
+    }
+  },
   "cloudAutoBackup": {
     "locked": {
       "title": "Sinkronisasi Otomatis",

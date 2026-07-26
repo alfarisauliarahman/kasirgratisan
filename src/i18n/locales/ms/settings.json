@@ -335,6 +335,79 @@
       "close": "Tutup"
     }
   },
+  "selfSync": {
+    "nav": {
+      "title": "Penyelarasan Antara Peranti",
+      "description": "Samakan data kedai di beberapa telefon melalui pelayan sendiri"
+    },
+    "locked": {
+      "title": "Penyelarasan Antara Peranti",
+      "permissionLabel": "Urus Backup"
+    },
+    "title": "Penyelarasan Antara Peranti",
+    "intro": "Samakan data kedai di beberapa telefon atau tablet menggunakan pelayan penyelarasan sendiri. Masukkan alamat pelayan dan kunci rahsia yang sama tepat di setiap peranti.",
+    "status": {
+      "title": "Status",
+      "on": "Aktif",
+      "off": "Tidak aktif",
+      "lastSync": "Kali terakhir berjaya: {{time}}",
+      "neverSynced": "Belum pernah berjaya diselaraskan",
+      "deviceId": "Kod peranti ini:",
+      "deviceIdHint": "sebut kod ini apabila meminta bantuan"
+    },
+    "toggle": {
+      "label": "Hidupkan penyelarasan",
+      "description": "Apabila aktif, data kedai dihantar dan diambil daripada pelayan ini.",
+      "needsConfig": "Isi alamat pelayan dan kunci rahsia, kemudian simpan dahulu."
+    },
+    "form": {
+      "title": "Alamat pelayan & kunci",
+      "urlLabel": "Alamat pelayan",
+      "urlPlaceholder": "https://selaras.kedaisaya.com",
+      "urlHint": "Salin tepat seperti yang diberikan, termasuk https://",
+      "secretLabel": "Kunci rahsia",
+      "secretPlaceholder": "Tampal kunci rahsia di sini",
+      "secretHint": "Kunci disimpan pada peranti ini sahaja dan tidak dihantar ke peranti lain.",
+      "showSecret": "Tunjuk kunci",
+      "hideSecret": "Sembunyikan kunci",
+      "save": "Simpan",
+      "savedAlready": "Sudah disimpan"
+    },
+    "warning": {
+      "title": "Jaga kunci rahsia ini",
+      "sameSecret": "Kunci yang sama mesti diisi pada semua peranti yang hendak diselaraskan. Jika berbeza walau satu aksara, datanya tidak akan bersambung.",
+      "keepPrivate": "Sesiapa yang memiliki kunci ini boleh membaca data kedai anda. Jangan hantar dalam kumpulan sembang dan jangan beri kepada orang luar."
+    },
+    "test": {
+      "button": "Uji sambungan",
+      "testing": "Menghubungi pelayan…",
+      "ok": "Pelayan berjaya dihubungi. Alamatnya sudah betul.",
+      "emptyUrl": "Alamat pelayan masih kosong. Isi alamatnya dahulu.",
+      "invalidUrl": "Alamat pelayan tidak sah. Contoh yang betul: https://selaras.kedaisaya.com",
+      "unreachable": "Pelayan tidak dapat dihubungi. Semak sambungan internet peranti ini, kemudian pastikan alamatnya ditaip dengan betul.",
+      "badStatus": "Pelayan menjawab, tetapi bukan jawapan yang dijangka (kod {{status}}). Tanya alamat yang betul kepada orang yang memasang pelayan.",
+      "note": "Ujian ini hanya menyemak alamat pelayan. Kunci rahsia tidak dihantar."
+    },
+    "advanced": {
+      "title": "Lanjutan",
+      "resetTitle": "Ambil semula semua data",
+      "resetDescription": "Selamat: aplikasi hanya membaca semula seluruh data daripada pelayan dari awal, tiada data dipadam. Berguna jika ada data yang belum kelihatan pada peranti ini.",
+      "resetButton": "Ambil semula dari awal",
+      "dialog": {
+        "title": "Ambil semula semua data?",
+        "description": "Penyelarasan seterusnya akan membaca seluruh data daripada pelayan dari awal. Tiada data dipadam, tetapi prosesnya boleh mengambil masa lebih lama dan menggunakan lebih banyak data internet daripada biasa.",
+        "confirm": "Ya, ambil semula"
+      }
+    },
+    "toast": {
+      "saved": "Alamat pelayan dan kunci disimpan",
+      "enabled": "Penyelarasan dihidupkan",
+      "disabled": "Penyelarasan dimatikan",
+      "urlRequired": "Alamat pelayan masih kosong",
+      "secretRequired": "Kunci rahsia masih kosong",
+      "cursorReset": "Selesai. Semua data akan diambil semula dari awal pada penyelarasan seterusnya."
+    }
+  },
   "cloudAutoBackup": {
     "locked": {
       "title": "Penyelarasan Otomatis",

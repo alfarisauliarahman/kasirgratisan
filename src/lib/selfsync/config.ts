@@ -115,3 +115,30 @@ export function markSyncedNow(): void {
 export function resetCursor(): void {
   write(KEY_CURSOR, '0');
 }
+
+/**
+ * Putuskan perangkat ini dari sync dan hapus kuncinya.
+ *
+ * Mematikan sync saja tidak cukup kalau HP-nya mau dijual, diservis, atau
+ * diberikan ke orang lain: kuncinya masih tersimpan, dan siapa pun yang
+ * memegangnya bisa membaca seluruh data toko. Ini menghapusnya betulan.
+ *
+ * Data kasir di perangkat ini TIDAK ikut terhapus — yang dibuang hanya
+ * setelan sync.
+ */
+export function disconnectDevice(): void {
+  try {
+    const ls = globalThis.localStorage;
+    if (!ls) return;
+    ls.removeItem(KEY_SECRET);
+    ls.removeItem(KEY_URL);
+    ls.removeItem(KEY_CURSOR);
+    ls.removeItem(KEY_LAST_OK);
+    ls.setItem(KEY_ENABLED, '0');
+    // Identitas perangkat sengaja ikut dibuang: kalau HP ini dipasang ulang
+    // nanti, ia layak dianggap perangkat baru.
+    ls.removeItem(KEY_DEVICE);
+  } catch {
+    /* lihat alasan di read() */
+  }
+}

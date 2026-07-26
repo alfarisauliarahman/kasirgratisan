@@ -329,6 +329,40 @@ describe('saat gagal', () => {
   });
 });
 
+describe('memutus perangkat', () => {
+  it('menghapus kunci, bukan sekadar mematikan sync', async () => {
+    const { disconnectDevice, getConfig } = await import('@/lib/selfsync/config');
+    setConfig({ url: 'https://sync.example.com', secret: 'kunci-toko', enabled: true });
+
+    disconnectDevice();
+
+    const c = getConfig();
+    expect(c.secret).toBe('');
+    expect(c.url).toBe('');
+    expect(c.enabled).toBe(false);
+  });
+
+  it('sync berhenti jalan setelah diputus', async () => {
+    const { disconnectDevice } = await import('@/lib/selfsync/config');
+    const { fetchMock } = fakeServer([{ cursor: 0, changes: [] }]);
+
+    disconnectDevice();
+    const res = await runSync();
+
+    expect(res.skipped).toBe('not-configured');
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('tidak menghapus data kasir', async () => {
+    const { disconnectDevice } = await import('@/lib/selfsync/config');
+    await addCategory('Tetap ada');
+
+    disconnectDevice();
+
+    expect(await db.categories.count()).toBe(1);
+  });
+});
+
 describe('keamanan permintaan', () => {
   it('mengirim kunci lewat header, bukan di URL', async () => {
     const { fetchMock } = fakeServer([{ cursor: 0, changes: [] }]);

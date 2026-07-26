@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { Settings, Store, CreditCard, Tag, Download, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, LineChart, Cloud, HandCoins, ClipboardCheck, LayoutGrid, Send, AlertTriangle } from 'lucide-react';
+import { Settings, Store, CreditCard, Tag, Download, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, LineChart, Cloud, HandCoins, ClipboardCheck, LayoutGrid, Send, AlertTriangle, RefreshCw } from 'lucide-react';
 import WhatsNewModal from '@/components/WhatsNewModal';
 import { FEATURES, getUnseenFeatures } from '@/lib/whats-new';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -399,6 +399,24 @@ export default function Pengaturan() {
                 )}
               </div>
               <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+            </CardContent>
+          </Card>
+        </Link>
+      )}
+
+      {/* Sinkron antar HP lewat server sendiri */}
+      {can('manage_backup') && (
+        <Link to="/settings/self-sync" className="block">
+          <Card className="border-0 shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-3 flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                <RefreshCw className="w-4 h-4" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold">{t('selfSync.nav.title')}</p>
+                <p className="text-[10px] text-muted-foreground">{t('selfSync.nav.description')}</p>
+              </div>
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
             </CardContent>
           </Card>
         </Link>

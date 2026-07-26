@@ -364,6 +364,79 @@
       "close": "Close"
     }
   },
+  "selfSync": {
+    "nav": {
+      "title": "Sync Between Devices",
+      "description": "Keep your shop data the same on several phones via your own server"
+    },
+    "locked": {
+      "title": "Sync Between Devices",
+      "permissionLabel": "Manage Backup"
+    },
+    "title": "Sync Between Devices",
+    "intro": "Keep your shop data the same across several phones or tablets using your own sync server. Enter the exact same server address and secret key on every device.",
+    "status": {
+      "title": "Status",
+      "on": "On",
+      "off": "Off",
+      "lastSync": "Last successful sync: {{time}}",
+      "neverSynced": "Never synced successfully yet",
+      "deviceId": "This device's code:",
+      "deviceIdHint": "mention this code when asking for help"
+    },
+    "toggle": {
+      "label": "Turn on sync",
+      "description": "When on, your shop data is sent to and pulled from this server.",
+      "needsConfig": "Enter the server address and secret key, then save first."
+    },
+    "form": {
+      "title": "Server address & key",
+      "urlLabel": "Server address",
+      "urlPlaceholder": "https://sync.myshop.com",
+      "urlHint": "Copy it exactly as given, including the https:// part",
+      "secretLabel": "Secret key",
+      "secretPlaceholder": "Paste the secret key here",
+      "secretHint": "The key is stored on this device only and is never sent to other devices.",
+      "showSecret": "Show key",
+      "hideSecret": "Hide key",
+      "save": "Save",
+      "savedAlready": "Saved"
+    },
+    "warning": {
+      "title": "Keep this secret key safe",
+      "sameSecret": "The same key must be entered on every device you want to sync. If even one character differs, the data will not connect.",
+      "keepPrivate": "Anyone who has this key can read your shop data. Do not post it in chat groups and do not give it to outsiders."
+    },
+    "test": {
+      "button": "Test connection",
+      "testing": "Contacting the server…",
+      "ok": "Server reached. The address is correct.",
+      "emptyUrl": "The server address is still empty. Please fill it in first.",
+      "invalidUrl": "That server address is not valid. A correct example: https://sync.myshop.com",
+      "unreachable": "Could not reach the server. Check this device's internet connection, then make sure the address is typed correctly.",
+      "badStatus": "The server replied, but not with the expected answer (code {{status}}). Ask whoever set up the server for the correct address.",
+      "note": "This test only checks the server address. The secret key is not sent."
+    },
+    "advanced": {
+      "title": "Advanced",
+      "resetTitle": "Pull all data again",
+      "resetDescription": "Safe: the app only re-reads all data from the server from the beginning, nothing is deleted. Useful if some data still seems missing on this device.",
+      "resetButton": "Pull everything from scratch",
+      "dialog": {
+        "title": "Pull all data again?",
+        "description": "The next sync will read all data from the server from the beginning. Nothing is deleted, but it may take longer and use more mobile data than usual.",
+        "confirm": "Yes, pull again"
+      }
+    },
+    "toast": {
+      "saved": "Server address and key saved",
+      "enabled": "Sync turned on",
+      "disabled": "Sync turned off",
+      "urlRequired": "The server address is still empty",
+      "secretRequired": "The secret key is still empty",
+      "cursorReset": "Done. All data will be pulled again from the beginning on the next sync."
+    }
+  },
   "cloudAutoBackup": {
     "locked": {
       "title": "Automatic Sync",

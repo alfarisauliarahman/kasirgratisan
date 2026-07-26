@@ -45,6 +45,7 @@ import CloudAutoBackupSettings from "./pages/settings/CloudAutoBackupSettings";
 import CloudHistorySettings from "./pages/settings/CloudHistorySettings";
 import CloudStoreSettings from "./pages/settings/CloudStoreSettings";
 import CloudOnlineStoreSettings from "./pages/settings/CloudOnlineStoreSettings";
+import SelfSyncSettings from "./pages/settings/SelfSyncSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -78,8 +79,27 @@ const App = () => {
     };
 
     window.addEventListener('online', handleOnline);
+
+    // Sync mandiri (server sendiri), terpisah dari FreeKasir Cloud di atas.
+    // Saldo awal produk ditetapkan lebih dulu: perhitungannya bertumpu pada
+    // `products.stock` yang masih dipercaya, jadi harus selesai sebelum data
+    // dari perangkat lain mulai digabungkan.
+    let stopSelfSync: (() => void) | undefined;
+    void (async () => {
+      try {
+        const { ensureOpeningBalances } = await import('@/lib/selfsync/baseline');
+        await ensureOpeningBalances();
+        const { startScheduler } = await import('@/lib/selfsync/scheduler');
+        stopSelfSync = startScheduler();
+      } catch (err) {
+        // Aplikasi tetap harus jalan penuh secara offline walau sync gagal nyala.
+        console.warn('[SelfSync] Gagal menyalakan sync mandiri:', err);
+      }
+    })();
+
     return () => {
       window.removeEventListener('online', handleOnline);
+      stopSelfSync?.();
     };
   }, []);
 
@@ -318,6 +338,14 @@ const App = () => {
                     element={
                       <ErrorBoundary>
                         <CloudOnlineStoreSettings />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/settings/self-sync"
+                    element={
+                      <ErrorBoundary>
+                        <SelfSyncSettings />
                       </ErrorBoundary>
                     }
                   />
