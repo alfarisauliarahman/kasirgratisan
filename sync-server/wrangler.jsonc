@@ -7,6 +7,11 @@
 	"observability": {
 		"enabled": true
 	},
+	// Worker ini memegang data toko. URL utamanya memang perlu publik supaya HP
+	// kalian bisa menghubunginya, tapi URL preview per-versi tidak ada gunanya
+	// di sini dan cuma menambah pintu masuk — dimatikan.
+	"workers_dev": true,
+	"preview_urls": false,
 	// Kode Worker membaca binding bernama `DB` (lihat `Env` di src/index.ts),
 	// jadi namanya harus persis itu. `wrangler d1 create` sempat menambahkan
 	// binding kedua bernama `freekasir_sync` ke database yang sama — sudah
