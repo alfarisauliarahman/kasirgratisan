@@ -8,17 +8,31 @@
 import { runSync, type SyncRunResult } from './engine';
 import { isConfigured } from './config';
 
-/** Jeda antar sync berkala saat aplikasi terbuka. */
-const INTERVAL_MS = 30_000;
+/**
+ * Jeda saat aplikasi sedang dilihat.
+ *
+ * Inilah yang menentukan berapa lama perubahan dari HP lain terasa muncul.
+ * Kecil supaya terasa cepat; anggarannya masih longgar — 5 detik selama 12 jam
+ * buka toko itu sekitar 8.600 permintaan per perangkat per hari, sementara
+ * jatah gratis Cloudflare 100.000 per hari.
+ */
+const INTERVAL_ACTIVE_MS = 5_000;
+
+/**
+ * Jeda saat aplikasi di latar belakang.
+ *
+ * Tab yang tidak dilihat tidak perlu dikejar; menariknya sesering yang aktif
+ * cuma menghabiskan kuota dan baterai tanpa ada yang melihat hasilnya.
+ */
+const INTERVAL_IDLE_MS = 60_000;
 
 /**
  * Jeda setelah ada perubahan lokal.
  *
- * Cukup panjang untuk menggabungkan satu transaksi yang menulis banyak baris
- * sekaligus menjadi satu kiriman, cukup pendek supaya kasir lain melihatnya
- * hampir seketika.
+ * Cukup untuk menggabungkan satu transaksi yang menulis banyak baris menjadi
+ * satu kiriman, tapi tidak sampai terasa menunggu.
  */
-const DEBOUNCE_MS = 3_000;
+const DEBOUNCE_MS = 1_000;
 
 type Listener = (result: SyncRunResult) => void;
 
@@ -73,10 +87,24 @@ export function syncNow(): Promise<SyncRunResult> {
 export function startScheduler(): () => void {
   stopScheduler();
 
-  intervalId = setInterval(() => void fire(), INTERVAL_MS);
+  const isVisible = () =>
+    typeof document === 'undefined' || document.visibilityState === 'visible';
+
+  const arm = () => {
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(
+      () => void fire(),
+      isVisible() ? INTERVAL_ACTIVE_MS : INTERVAL_IDLE_MS,
+    );
+  };
+
+  arm();
 
   const onVisible = () => {
-    if (document.visibilityState === 'visible') void fire();
+    // Pasang ulang dengan jeda yang sesuai keadaan sekarang, lalu tarik
+    // seketika supaya kembali ke tab tidak perlu menunggu satu putaran.
+    arm();
+    if (isVisible()) void fire();
   };
   const onOnline = () => void fire();
 
